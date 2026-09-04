@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>TEST SITE — invented data only</title>
+<style>
+:root{color-scheme:light;--bg:#f6f7f9;--card:#fff;--ink:#16181d;--mut:#6b7280;--line:#e3e6ea;--bd:#1e40af}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 -apple-system,Segoe UI,Roboto,sans-serif}
+.wrap{padding:16px}
+h1{font-size:19px;margin:0 0 2px}
+.sub{color:var(--mut);font-size:12.5px;margin-bottom:10px}
+.ro{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;padding:7px 11px;border-radius:7px;font-size:12.5px;margin-bottom:12px}
+.cards{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:12px}
+.c{background:var(--card);border:1px solid var(--line);border-radius:9px;padding:9px 14px;min-width:104px}
+.c b{display:block;font-size:21px;line-height:1.1}
+.c span{font-size:11px;color:var(--mut)}
+.c.hl{border-color:var(--bd);background:#eff6ff}
+.bar{display:flex;gap:8px;align-items:center;margin-bottom:8px}
+.bar2{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin-bottom:12px;
+padding:8px 10px;background:var(--card);border:1px solid var(--line);border-radius:9px}
+.bar2 .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--mut);margin-right:2px}
+.bar2 .sp{width:1px;height:20px;background:var(--line);margin:0 4px}
+#filters,#togs{display:inline-flex;flex-wrap:wrap;gap:7px;align-items:center}
+input,select,button,textarea{font:inherit}   /* form controls default to the OS font, not the page's */
+input[type=text]{padding:8px 11px;border:1px solid var(--line);border-radius:7px;background:#fff}
+#q{flex:1;min-width:230px}
+button{padding:7px 12px;border:1px solid var(--line);background:#fff;border-radius:7px;cursor:pointer;font:inherit;white-space:nowrap}
+button:hover{background:#f3f4f6}
+.tog{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;padding:6px 10px;border:1px solid var(--line);
+background:#fff;border-radius:7px;cursor:pointer;white-space:nowrap}
+.tog:hover{background:#f3f4f6}
+.tog.on{background:#eff6ff;border-color:#93c5fd;color:#1e40af;font-weight:600}
+/* excluded: the label is still there, its tickets are not. Struck through and
+   grey so it reads as "taken out", never as another kind of "selected". */
+.tog.ex{background:#fef2f2;border-color:#fca5a5;color:#991b1b;text-decoration:line-through;
+        text-decoration-thickness:1px;opacity:.85}
+.tog.ex .exm{font-weight:700;text-decoration:none;display:inline-block}
+.ms{position:relative;display:inline-block}
+.msb{display:flex;align-items:center;gap:6px;white-space:nowrap}
+.ms.act .msb{background:#eff6ff;border-color:#93c5fd;color:#1e40af;font-weight:600}
+.msb .n{background:var(--bd);color:#fff;border-radius:9px;padding:0 6px;font-size:11px}
+.msp{display:none;position:absolute;z-index:30;top:105%;left:0;background:#fff;border:1px solid var(--line);
+border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.13);min-width:210px;max-height:300px;overflow:auto;padding:6px}
+.ms.open .msp{display:block}
+.msp label{display:flex;gap:7px;align-items:center;padding:5px 7px;border-radius:5px;cursor:pointer;font-size:13px}
+.msp label:hover{background:#f3f4f6}
+.msa{display:flex;justify-content:space-between;gap:8px;border-top:1px solid var(--line);margin-top:5px;padding-top:5px}
+.msa a{font-size:12px;color:var(--bd);cursor:pointer;padding:3px 6px}
+.msa a.x{color:#b91c1c}
+table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:9px;overflow:hidden}
+th{background:#f0f2f5;text-align:left;padding:8px 9px;font-size:11.5px;text-transform:uppercase;letter-spacing:.03em;
+color:#4b5563;cursor:pointer;white-space:nowrap;position:sticky;top:0;z-index:2}
+th:hover{background:#e5e7eb}
+td{padding:8px 9px;border-top:1px solid var(--line);vertical-align:top;font-size:13px}
+tr.r{cursor:pointer}tr.r:hover td{background:#f9fafb}
+.tk{color:var(--bd);font-weight:600;text-decoration:none}.tk:hover{text-decoration:underline}
+.pill{display:inline-block;padding:1px 8px;border-radius:11px;font-size:11px;font-weight:600;white-space:nowrap}
+.s0{background:#d1fae5;color:#047857}.s1{background:#fef3c7;color:#b45309}
+.s2{background:#ede9fe;color:#6d28d9}.s3{background:#e0f2fe;color:#0369a1}
+.sys{display:inline-block;padding:1px 7px;border-radius:5px;font-size:11px;font-weight:600;background:#eef2ff;color:#3730a3}
+.sysM{background:#ecfdf5;color:#065f46}.sysV{background:#fdf2f8;color:#9d174d}
+.inv{background:#fce7f3;color:#9d174d}
+.fin{background:#fef9c3;color:#854d0e}
+.pri{font-size:11px;font-weight:600}.pHigh{color:#b91c1c}.pMedium{color:#b45309}.pLow{color:#4b5563}
+.desc{color:#374151;max-width:400px}
+.exp td{padding:12px 16px;background:#fbfcfd}
+.dl{display:grid;grid-template-columns:150px 1fr;gap:5px 14px;font-size:13px;margin-bottom:9px}
+.dl dt{color:var(--mut)}
+.blk{background:#fff;border:1px solid var(--line);border-radius:7px;padding:9px 11px;margin:7px 0;white-space:pre-wrap}
+.blk h4{margin:0 0 5px;font-size:11.5px;text-transform:uppercase;color:var(--mut);letter-spacing:.03em}
+.att{display:inline-flex;align-items:center;gap:5px;margin:3px 5px 3px 0;padding:4px 9px;border:1px solid var(--line);
+background:#fff;border-radius:6px;cursor:pointer;font-size:12px}
+.att:hover{background:#eff6ff;border-color:#93c5fd}
+.att.no{cursor:not-allowed;opacity:.62}
+.att.lnk{text-decoration:none;color:inherit}
+.zh{opacity:.55;font-size:11px;margin-left:5px}
+.clip{font-size:11px;color:var(--mut)}
+.att.alt{font-size:11px;padding:2px 6px;opacity:.75}
+/* quiet confirmation that the auto-export fired — a green tick that fades, not a dialog */
+.autos{font-size:12px;color:#15803d;opacity:0;transition:opacity .25s;align-self:center;white-space:nowrap}
+.autos.on{opacity:1}
+.autos:before{content:"✓ "}
+#vw{position:fixed;inset:0;background:rgba(15,23,42,.72);display:none;align-items:center;justify-content:center;z-index:99}
+#vw.on{display:flex}
+#vwin{background:#fff;border-radius:10px;max-width:92vw;max-height:92vh;overflow:auto;padding:12px}
+.zwrap{max-width:88vw;max-height:78vh;overflow:hidden}
+.zwrap.scroll{overflow:auto}
+img.zoomable{max-width:88vw;max-height:78vh;display:block;cursor:zoom-in}
+img.zoomable.zoomed{max-width:none;max-height:none;cursor:zoom-out}#vwin iframe{width:86vw;height:78vh;border:0}
+.vhd{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:8px;font-size:13px}
+.empty{padding:26px;text-align:center;color:var(--mut)}
+.csvt{border-collapse:collapse;font:12.5px/1.4 ui-monospace,Consolas,monospace;min-width:520px}
+.csvt th{background:#eef2f7;position:sticky;top:0;padding:6px 10px;border:1px solid #d6dbe1;text-align:left;
+white-space:nowrap;text-transform:none;letter-spacing:0;font-size:12px;cursor:default}
+.csvt td{padding:5px 10px;border:1px solid #e3e6ea;white-space:nowrap;vertical-align:middle}
+.csvt tbody tr:nth-child(even) td{background:#fafbfc}
+.tw{max-height:calc(100vh - 260px);overflow:auto;border-radius:9px}
+/* ---- labels you create, remarks you type, and the publish step ---- */
+.warn{background:#fef2f2;border:1px solid #fecaca;color:#991b1b;padding:7px 11px;border-radius:7px;
+font-size:12.5px;margin-bottom:10px;display:none}
+.warn.on{display:block}
+td.sel,th.sel{width:30px;text-align:center;padding-left:11px;display:none}
+body.pick td.sel,body.pick th.sel{display:table-cell}
+body.pick tr.r{user-select:none}
+tr.r.on td{background:#eff6ff!important}
+td.rmk{min-width:260px;width:260px}
+/* age */
+td.age,th.age{min-width:96px;white-space:nowrap;padding-right:14px}
+.age b{font-size:14px;display:block;line-height:1.35}
+.a0{color:#4b5563}.a1{color:#b45309}.a2{color:#b91c1c}
+.idle{font-size:11px;color:#9aa1ab;display:block;line-height:1.35}
+/* date filter */
+table.stg{width:auto;min-width:420px;margin:8px 0 2px;border:1px solid var(--line)}
+table.stg th{position:static;font-size:10.5px;padding:5px 10px;cursor:default}
+table.stg td{padding:5px 10px;font-size:12.5px}
+table.stg tr.now td{background:#fffdf5}
+table.stg tr.tot td{background:#f6f7f9;color:var(--mut)}
+.dates input,.dates select{padding:6px 9px;font-size:12.5px;line-height:1.5;border:1px solid #e7eaee;
+border-radius:7px;background:#fff;color:var(--ink);height:33px}
+.dates select{padding-right:6px}
+.dates input:focus,.dates select:focus{outline:0;border-color:#93c5fd;background:#f8fbff}
+.dates input::-webkit-datetime-edit{font:inherit;color:var(--ink)}
+.dates input::-webkit-calendar-picker-indicator{opacity:.5;cursor:pointer}
+.dates input.bad{border-color:#fca5a5;background:#fff5f5}
+.dates .arw{color:#9aa1ab;font-size:12px}
+.bar2{border-color:#eceef1}
+.msb,.tog,.bar2 button{border-color:#e7eaee}
+/* small dialog — the sandbox blocks prompt()/confirm()/alert() */
+#dg{position:fixed;inset:0;background:rgba(15,23,42,.5);display:none;align-items:center;justify-content:center;z-index:150}
+#dg.on{display:flex}
+#dgin{background:#fff;border-radius:11px;box-shadow:0 20px 60px rgba(0,0,0,.3);padding:18px;min-width:340px;max-width:460px}
+#dgin h3{margin:0 0 10px;font-size:15px}
+#dgin input[type=text]{width:100%;margin-bottom:10px}
+#dgin .row{display:flex;gap:9px;justify-content:flex-end;margin-top:14px}
+#dgin .msg{font-size:13px;color:#374151;white-space:pre-wrap}
+.icons{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:4px}
+.icons b{cursor:pointer;border:1px solid var(--line);border-radius:7px;padding:4px 8px;font-weight:400;font-size:15px}
+.icons b.on{border-color:#2563eb;background:#eff6ff}
+.pri-b{background:#111827;color:#fff;border-color:#111827}
+.pri-b:hover{background:#374151}
+/* collapse */
+.hdtog{display:flex;align-items:center;gap:7px;margin:0 0 10px;cursor:pointer;color:var(--mut);font-size:12.5px;
+user-select:none;width:fit-content;padding:3px 9px;border:1px solid var(--line);border-radius:7px;background:#fff}
+.hdtog:hover{background:#f3f4f6}
+.hdtog .cv{transition:transform .15s;display:inline-block}
+body.fold .hdtog .cv{transform:rotate(-90deg)}
+body.fold #cards,body.fold .bar2{display:none}
+/* right-click menu */
+#cm{position:fixed;z-index:200;display:none;background:#fff;border:1px solid var(--line);border-radius:9px;
+box-shadow:0 12px 34px rgba(0,0,0,.18);min-width:212px;padding:5px;font-size:13px}
+#cm.on{display:block}
+#cm .it{padding:7px 10px;border-radius:6px;cursor:pointer;display:flex;align-items:center;gap:8px}
+#cm .it:hover{background:#f3f4f6}
+#cm .it.dis{opacity:.45;cursor:default}#cm .it.dis:hover{background:none}
+#cm .it.x{color:#b91c1c}
+#cm .hd{padding:6px 10px 4px;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--mut)}
+#cm .sep{height:1px;background:var(--line);margin:4px 2px}
+#cm .dot{width:11px;height:11px;border-radius:3px;border:1px solid rgba(0,0,0,.12);flex:none}
+.dates{display:inline-flex;gap:6px;align-items:center}
+.dates input{padding:6px 8px;font-size:12.5px}
+.rmkbox{width:100%;min-height:30px;border:1px dashed #d1d5db;border-radius:6px;padding:4px 6px;font:inherit;
+font-size:12.5px;background:#fff;white-space:pre-wrap;cursor:text;color:#374151}
+.rmkbox:empty:before{content:"add a note…";color:#b6bcc5}
+.rmkbox:focus{outline:0;border:1px solid #93c5fd;background:#f8fbff}
+.rmkbox.has{border-style:solid;border-color:#fcd34d;background:#fffdf5}
+#selbar{position:fixed;left:50%;transform:translateX(-50%);bottom:18px;z-index:60;display:none;
+gap:9px;align-items:center;background:#111827;color:#fff;padding:9px 13px;border-radius:10px;
+box-shadow:0 10px 30px rgba(0,0,0,.28);font-size:13px}
+#selbar.on{display:flex}
+#selbar button{background:#1f2937;color:#fff;border-color:#374151}
+#selbar button:hover{background:#374151}
+#lm{max-width:560px}
+.lrow{display:flex;align-items:center;gap:9px;padding:7px 4px;border-top:1px solid var(--line);background:#fff}
+.lrow.dragging{opacity:.4}
+.lrow.over{box-shadow:inset 0 2px 0 #2563eb}
+.grip{cursor:grab;color:#9ca3af;font-size:14px;line-height:1;user-select:none}
+.grip:active{cursor:grabbing}
+.dz.ar{color:#6b7280;font-size:14px;padding:0 3px;line-height:1}
+.dz.ar.off{opacity:.25;pointer-events:none}
+.lrow:first-child{border-top:0}
+.lrow .nm{flex:1}
+.sw{width:22px;height:22px;border-radius:6px;border:1px solid rgba(0,0,0,.12);cursor:pointer;padding:0}
+.mini{font-size:11.5px;color:var(--mut)}
+.dz{color:#b91c1c;cursor:pointer;font-size:12px}
+.newl{display:flex;gap:7px;align-items:center;margin-top:12px;padding-top:11px;border-top:1px solid var(--line)}
+</style></head><body><div class="wrap">
+
+<h1 id="ttl"></h1>
+<div class="sub" id="sub"></div>
+<div class="ro"><b>Read-only mirror.</b> Nothing here changes V-ONE. No ticket is ever edited or removed — a sync replaces the whole snapshot.</div>
+<div class="warn" id="warn"></div>
+
+<div class="hdtog" id="fold"><span class="cv">˅</span> <span id="foldt">Hide the counts and filters</span></div>
+<div class="cards" id="cards"></div>
+<div class="bar">
+  <input type="text" id="q" placeholder="Search everything — ticket, requestor, department, description, action taken…">
+  <button id="lbtn">🏷️ Labels</button>
+  <button id="pick">Select tickets</button>
+  <button id="exp">Export notes</button>
+  <button id="csv">Export CSV</button>
+  <span class="autos" id="autos"></span>
+</div>
+<div class="bar2">
+  <span class="lbl">Filter</span><span id="filters"></span>
+  <span class="dates">
+    <input type="date" id="d1" title="From this date">
+    <span class="arw">→</span>
+    <input type="date" id="d2" title="To this date. Leave empty for one day only.">
+  </span>
+  <span class="sp"></span>
+  <span id="togs"></span>
+  <span class="sp"></span>
+  <button id="clr">Clear all</button>
+</div>
+
+<div class="tw"><table>
+<thead><tr>
+<th class="sel"><input type="checkbox" id="ckall" title="Select every ticket currently shown"></th>
+<th data-k="1">Ticket</th><th data-k="21">System</th><th data-k="3">Date</th>
+<th data-k="-1" title="How long since the ticket was raised, and how long since anything last changed">Age</th>
+<th data-k="5">Module</th>
+<th data-k="6">Requestor</th><th data-k="8">Department</th><th data-k="9">Plant</th>
+<th data-k="10">Category</th><th data-k="11">Pri</th><th data-k="2">Status</th>
+<th>Problem description</th><th>Comment</th><th>Files</th>
+</tr></thead><tbody id="tb"></tbody></table>
+<div class="empty" id="none" style="display:none">No tickets match.</div></div>
+
+<div id="selbar">
+  <span id="seln"></span>
+  <select id="addl"></select><button id="addb">Add</button>
+  <button id="reml">Remove</button>
+  <button id="remall">Remove all labels</button>
+  <button id="selx">Cancel</button>
+</div>
+<div id="cm"></div>
+<div id="dg"><div id="dgin"></div></div>
+
+<div id="vw"><div id="vwin"><div class="vhd"><b id="vnm"></b><button onclick="closeV()">Close</button></div><div id="vbd"></div></div></div>
+</div>
+<script>
+const DATA={"d":{"s":["Close Case","Open","Assign","Troubleshoot"],"m":["Accounting","Warehouse","Planning","Sales"],"t":["FINANCE","SCM-STORE","PRODUCTION","QA"],"p":["P1","P2","P5","P7"],"c":["Technical Supports","General Inquiry"],"y":["High","Medium","Low"],"q":["ALEX TAN","BELLA LIM","CHRIS WONG","DIANA LEE","EVAN NG"],"e":["E0001","E0002","E0003","E0004","E0005"],"cg":["—"],"z":["—"],"g1":["High","Medium","Low"],"g2":["ERP"],"g3":["Module A"],"g4":["Technical Supports"]},"r":[["900000","T209901-0001",1,"2026-04-10","2026-09-01",0,0,0,0,0,0,0,"A report total does not match what the screen shows for the same period.","Checked the stored figures — they are correct. The report layout is being reviewed.","",0,0,[["Screenshot of the error.png","fake-0-0"]],1,1,0,0,0,0],["900001","T209901-0002",3,"2026-05-11","2026-09-02",1,1,1,1,1,1,1,"Two line items appear for one receiving entry.","Confirmed a display duplication only; the underlying record is single.","",0,0,[["Stock report extract.xlsx","fake-1-0"],["Screenshot second.png","fake-1-1"]],1,0,1,0,0,0],["900002","T209902-0003",2,"2026-06-12","2026-09-03",2,2,2,2,2,0,2,"Export to spreadsheet fails with an error on the local PC.","Reproduced with a special character in the data. Recommended a different tool.","",0,0,[["Approval log.pdf","fake-2-0"]],1,1,2,0,0,0],["900003","T209902-0004",1,"2026-07-13","2026-09-04",3,3,3,3,3,1,0,"Approval step does not appear in the panel after submitting.","Session had been interrupted. Re-submitted successfully.","",0,0,[["Forwarded enquiry.eml","fake-3-0"]],1,0,0,0,0,0],["900004","T209903-0005",0,"2026-08-14","2026-09-05",0,4,4,0,0,0,1,"A quantity shows one decimal place more than expected.","Rounding difference under review.","",0,0,[["Costing sheet.xlsx","fake-4-0"],["Reference photo.png","fake-4-1"]],1,1,1,0,0,0]],"meta":{"synced":"2026-09-04 09:00 (TEST DATA)"},"local":{"T209901-0001":{"screenshotoftheerror":["Screenshot of the error.png","C:\\Users\\yee-wei.seh\\Documents\\Obsidian\\Database\\NSM Ticket\\V-ONE Tracker\\_test_attachments\\T209901-0001\\Screenshot of the error.png"]},"T209901-0002":{"stockreportextract":["Stock report extract.xlsx","C:\\Users\\yee-wei.seh\\Documents\\Obsidian\\Database\\NSM Ticket\\V-ONE Tracker\\_test_attachments\\T209901-0002\\Stock report extract.xlsx"],"screenshotsecond":["Screenshot second.png","C:\\Users\\yee-wei.seh\\Documents\\Obsidian\\Database\\NSM Ticket\\V-ONE Tracker\\_test_attachments\\T209901-0002\\Screenshot second.png"]},"T209902-0003":{"approvallog":["Approval log.pdf","C:\\Users\\yee-wei.seh\\Documents\\Obsidian\\Database\\NSM Ticket\\V-ONE Tracker\\_test_attachments\\T209902-0003\\Approval log.pdf"]},"T209902-0004":{"forwardedenquiry":["Forwarded enquiry.eml","C:\\Users\\yee-wei.seh\\Documents\\Obsidian\\Database\\NSM Ticket\\V-ONE Tracker\\_test_attachments\\T209902-0004\\Forwarded enquiry.eml"]},"T209903-0005":{"costingsheet":["Costing sheet.xlsx","C:\\Users\\yee-wei.seh\\Documents\\Obsidian\\Database\\NSM Ticket\\V-ONE Tracker\\_test_attachments\\T209903-0005\\Costing sheet.xlsx"],"referencephoto":["Reference photo.png","C:\\Users\\yee-wei.seh\\Documents\\Obsidian\\Database\\NSM Ticket\\V-ONE Tracker\\_test_attachments\\T209903-0005\\Reference photo.png"]}},"sets":{},"prev":{},"files":{"T209901-0001":{"screenshotoftheerror":"files/T209901-0001/Screenshot%20of%20the%20error.png"},"T209901-0002":{"stockreportextract":"files/T209901-0002/Stock%20report%20extract.xlsx","screenshotsecond":"files/T209901-0002/Screenshot%20second.png"},"T209902-0003":{"approvallog":"files/T209902-0003/Approval%20log.pdf"},"T209902-0004":{"forwardedenquiry":"files/T209902-0004/Forwarded%20enquiry.eml"},"T209903-0005":{"costingsheet":"files/T209903-0005/Costing%20sheet.xlsx","referencephoto":"files/T209903-0005/Reference%20photo.png"}},"alts":{},"notes":{"labels":{},"member":{},"remarks":{}},"age":{"_stages":[]}}, CFG={"id":"nsmtest","title":"TEST SITE — invented data only","source":"nowhere (test)","ticketUrl":"https://example.com/ticket/{id}","badges":[],"packNote":"Every value on this page is invented. It exists only to check that a hosted page can serve its attachment files."};
+const D=DATA.d, R=DATA.r, LOCAL=DATA.local||{}, PREV=DATA.prev||{}, FILES=DATA.files||{}, ALTS=DATA.alts||{};
+const SETS={}; for(const b of CFG.badges) SETS[b.id]=new Set((DATA.sets||{})[b.id]||[]);
+
+// ---- your own labels and remarks ------------------------------------------
+// Three places this can live, in priority order:
+//   window.__BAKED__  a published copy carries its labels and remarks inside it
+//   localStorage      this browser, if it will allow it (see LSOK below)
+//   nowhere           opening the file directly can block storage; then Publish
+//                     or Export is the ONLY way the notes survive, so we say so.
+const CID=CFG.id||'tracker', LSKEY='tk_'+CID;
+// declared up here, not beside autoRun, because save() -> autoQueue() can fire
+// during start-up and a `const` read before its line throws
+const AUTO=CFG.autoExport===true, AUTOMS=(CFG.autoExportSeconds||3)*1000;
+const BAKED=DATA.notes&&typeof DATA.notes==='object'?DATA.notes:null;   // built in from data/notes.json
+let ST={labels:{},member:{},remarks:{}}, LSOK=true, dirty=false;
+try{const raw=localStorage.getItem(LSKEY); if(raw) ST=JSON.parse(raw);}catch(e){LSOK=false;}
+ST.labels=ST.labels||{}; ST.member=ST.member||{}; ST.remarks=ST.remarks||{}; ST.hidden=ST.hidden||[];
+if(BAKED){ // start from what was built in, but never throw away this reader's own edits
+ ST.labels =Object.assign({},BAKED.labels ||{},ST.labels);
+ ST.member =Object.assign({},BAKED.member ||{},ST.member);
+ ST.remarks=Object.assign({},BAKED.remarks||{},ST.remarks);
+}
+// ---- ageing ---------------------------------------------------------------
+// Durations are worked out here, from today's date — never baked in at build
+// time. That way a pack sent last week still shows a current age when it is
+// opened, instead of quietly reporting how old the ticket was on Monday.
+const AGE=DATA.age||{}, STG=AGE._stages||[];
+const TODAY=new Date(); TODAY.setHours(0,0,0,0);
+const NOW=Date.now();
+function days(d){ if(!d)return null; const t=Date.parse(d+'T00:00:00');
+ return isNaN(t)?null:Math.round((TODAY-t)/86400000); }
+// Whole units, never decimals. "2.8mo" reads like 2 months 8 of something, and
+// the something is ambiguous — weeks? days? Two plain numbers cannot be misread.
+const MO=30.44;
+function dur(ms){
+ const mins=Math.round(ms/60000);
+ if(mins<60) return Math.max(1,mins)+'m';
+ const hrs=Math.floor(mins/60);
+ if(hrs<24) return hrs+'h';
+ const d=Math.floor(ms/86400000);
+ if(d<7)   return d+'d';
+ if(d<31)  { const w=Math.floor(d/7), r=d%7; return w+'w'+(r?' '+r+'d':''); }
+ if(d<365) { let mo=Math.floor(d/MO), r=Math.round(d-mo*MO);
+             if(r>=Math.round(MO)){mo++;r=0;}          // never "1mo 30d" — that is 2mo
+             return mo+'mo'+(r?' '+r+'d':''); }
+ let y=Math.floor(d/365.25), rm=Math.floor((d-y*365.25)/MO);
+ if(rm>=12){y++;rm=0;}
+ return y+'y'+(rm?' '+rm+'mo':''); }
+// The stage table is a column of numbers people add up in their head, so it uses
+// ONE unit — days. Mixing "3w 2d" with "1mo 30d" and expecting the total to be
+// checkable is asking too much of the reader.
+function durD(ms){
+ const mins=Math.round(ms/60000);
+ if(mins<60) return Math.max(1,mins)+' min';
+ const hrs=Math.round(ms/3600000);
+ if(hrs<24) return hrs+' hr';
+ return Math.round(ms/86400000)+' d'; }
+// [{stage, from, to|null, ms}] — consecutive re-entries into the same stage are
+// merged, because "Troubleshoot → Troubleshoot" is an update, not a new stage.
+function stages(ref,closed,nowStage){
+ const e=AGE[ref]; if(!e||!e.c) return null;
+ const t0=Date.parse(e.c); if(isNaN(t0)) return null;
+ const marks=[]; let prev=t0, cur=(e.s[0]&&STG[e.s[0][0]])||'Open';
+ for(const [f,t,at] of e.s){
+  const ts=Date.parse(at); if(isNaN(ts)) continue;
+  const from=STG[f]||cur, to=STG[t]||'';
+  if(from===to){ continue; }                       // same-stage update, keep counting
+  marks.push({stage:from,from:prev,to:ts,ms:ts-prev});
+  prev=ts; cur=to;
+ }
+ // the ticket's own status is authoritative for where it sits NOW — a transition
+ // label describes an action, and a ticket can be moved back a stage
+ marks.push({stage:nowStage||cur,from:prev,to:closed?null:NOW,ms:(closed?prev:NOW)-prev,open:!closed});
+ // merge neighbours that ended up the same stage
+ const out=[];
+ for(const m of marks){ const last=out[out.length-1];
+  if(last&&last.stage===m.stage){ last.to=m.to; last.ms+=m.ms; last.open=m.open; }
+  else out.push(Object.assign({},m)); }
+ return out;
+}
+function ageCls(n){ return n==null?'a0' : n>=90?'a2' : n>=30?'a1' : 'a0'; }
+function human(n){ if(n==null)return '—'; if(n<1)return 'today'; return dur(n*86400000); }
+// local date, not UTC — an ISO slice shifts the day for anyone east of London,
+// which is why a ticket raised on 2 Jun was showing as 1 Jun
+const ymd=t=>{const d=new Date(t);
+ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');};
+function save(){dirty=true; ST.changedAt=Date.now();
+ try{localStorage.setItem(LSKEY,JSON.stringify(ST));}catch(e){LSOK=false;}
+ autoQueue(); banner();}
+// Comments typed here live in THIS browser until they are exported. Nothing
+// deletes them — but nobody else ever sees them either. Silence about that is
+// how a week of someone's notes quietly goes nowhere, so the page says it.
+function unexported(){
+ if(!ST.changedAt) return 0;
+ if((ST.exportedAt||0) >= ST.changedAt) return 0;
+ return Object.keys(ST.remarks||{}).length + Object.keys(ST.labels||{}).length;
+}
+function banner(){
+ const w=document.getElementById('warn'); let m='';
+ if(!LSOK) m='<b>This page cannot save to your browser.</b> That is normal when a file is opened directly. '+
+   'Your labels and comments are held only while this tab is open — click <b>Export notes</b> before closing, or they are gone.';
+ else if(unexported()&&AUTO) m='<b>Saving these to Downloads…</b> '+
+   'They will be part of the shared tracker after the next refresh. '+
+   '<span class="clip">Nothing to click. If this message stays put for more than a few seconds, '+
+   'Chrome has blocked the automatic download — click the blocked-download icon in the address bar and allow it.</span>';
+ else if(unexported()) m='<b>You have changes that only exist in this browser.</b> '+
+   'Click <b>Export notes</b> and send the file, or nobody else will see them. '+
+   '<span class="clip">Refreshing the tracker never deletes them — but it never shares them either.</span>';
+ w.innerHTML=m; w.classList.toggle('on',!!m);}
+
+// ---- dialogs ---------------------------------------------------------------
+// prompt() / confirm() / alert() are BLOCKED in the artifact sandbox — they return
+// nothing and the click looks dead. That is what made "New label…" do nothing.
+// Everything that needs input or a yes/no goes through this instead.
+const DG=document.getElementById('dg'), DGIN=document.getElementById('dgin');
+function dgClose(){DG.classList.remove('on');DGIN.innerHTML='';}
+DG.onclick=e=>{if(e.target===DG)dgClose();};
+function say(msg,title){
+ DGIN.innerHTML=`<h3>${esc(title||'')}</h3><div class="msg">${esc(msg)}</div>
+  <div class="row"><button class="pri-b" id="dgok">OK</button></div>`;
+ DG.classList.add('on'); DGIN.querySelector('#dgok').onclick=dgClose;
+ DGIN.querySelector('#dgok').focus();}
+function ask(title,msg,onYes,okLabel){
+ DGIN.innerHTML=`<h3>${esc(title)}</h3><div class="msg">${esc(msg)}</div>
+  <div class="row"><button id="dgno">Cancel</button><button class="pri-b" id="dgyes">${esc(okLabel||'Yes')}</button></div>`;
+ DG.classList.add('on');
+ DGIN.querySelector('#dgno').onclick=dgClose;
+ DGIN.querySelector('#dgyes').onclick=()=>{dgClose();onYes();};}
+const ICONS=['','⭐','🌟','✨','💫','🌠','⚡','🔥','❗','❓','📌','🏷️','✅','❌','⏳','⏰','👀','💬','📝',
+             '🔧','🛠️','⚙️','🐛','🚧','🔍','📦','📊','💰','🧪','🚀','🎯','🏆','💡','🔔','🔒','📅',
+             '🔴','🟠','🟡','🟢','🔵','🟣','⚪','👤','👥','🏭','🖥️','📎','🔁','⬆️','⬇️'];
+function labelForm(title,init,onSave){
+ const cur=Object.assign({name:'',icon:'🏷️',bg:PAL[0][0],fg:PAL[0][1]},init||{});
+ DGIN.innerHTML=`<h3>${esc(title)}</h3>
+  <input type="text" id="lname" placeholder="Label name — e.g. R&amp;D 25 Aug" value="${esc(cur.name)}">
+  <div class="mini" style="margin:2px 0 5px">Icon (pick the blank one for no icon)</div>
+  <div class="icons" id="ic">${ICONS.map(i=>`<b data-i="${i}" class="${i===cur.icon?'on':''}">${i||'—'}</b>`).join('')}</div>
+  <div class="mini" style="margin:9px 0 5px">Colour</div>
+  <div class="icons" id="cl">${PAL.map((p,n)=>`<b data-n="${n}" class="${p[0]===cur.bg?'on':''}"
+     style="background:${p[0]};color:${p[1]};min-width:34px">Aa</b>`).join('')}</div>
+  <div class="row"><button id="dgno">Cancel</button><button class="pri-b" id="dgyes">Save</button></div>`;
+ DG.classList.add('on');
+ const nm=DGIN.querySelector('#lname'); nm.focus(); nm.select();
+ DGIN.querySelectorAll('#ic b').forEach(b=>b.onclick=()=>{
+  DGIN.querySelectorAll('#ic b').forEach(x=>x.classList.remove('on'));b.classList.add('on');cur.icon=b.dataset.i;});
+ DGIN.querySelectorAll('#cl b').forEach(b=>b.onclick=()=>{
+  DGIN.querySelectorAll('#cl b').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+  const p=PAL[+b.dataset.n];cur.bg=p[0];cur.fg=p[1];});
+ DGIN.querySelector('#dgno').onclick=dgClose;
+ const go=()=>{const v=nm.value.trim(); if(!v){nm.focus();return;}
+  cur.name=v; dgClose(); onSave(cur);};
+ DGIN.querySelector('#dgyes').onclick=go;
+ nm.onkeydown=e=>{if(e.key==='Enter')go();};}
+const PAL=[['#fee2e2','#991b1b'],['#ffedd5','#9a3412'],['#fef9c3','#854d0e'],['#ecfccb','#3f6212'],
+           ['#dcfce7','#166534'],['#ccfbf1','#115e59'],['#cffafe','#155e75'],['#e0f2fe','#075985'],
+           ['#dbeafe','#1e40af'],['#e0e7ff','#3730a3'],['#ede9fe','#5b21b6'],['#f3e8ff','#6b21a8'],
+           ['#fae8ff','#86198f'],['#fce7f3','#9d174d'],['#ffe4e6','#9f1239'],['#f1f5f9','#334155'],
+           ['#e7e5e4','#44403c'],['#d1fae5','#065f46'],['#fef3c7','#92400e'],['#e2e8f0','#0f172a']];
+const newId=()=>'u'+Date.now().toString(36)+Math.floor(Math.random()*1e3).toString(36);
+const memb=id=>new Set(ST.member[id]||[]);
+// The order labels appear in, which is the order you put them in — not the order
+// you happened to create them. ST.order holds the ids; anything missing from it
+// (a label made before this existed, or one restored from a colleague's file)
+// falls to the end rather than disappearing.
+function ordered(){
+ const all=Object.keys(ST.labels), seen=new Set();
+ const out=[];
+ for(const id of (ST.order||[])) if(ST.labels[id]&&!seen.has(id)){out.push(id);seen.add(id);}
+ for(const id of all) if(!seen.has(id)) out.push(id);
+ return out;}
+function setOrder(ids){ST.order=ids;save();}
+function move(id,by){
+ const o=ordered(), i=o.indexOf(id), j=i+by;
+ if(i<0||j<0||j>=o.length) return;
+ o.splice(j,0,o.splice(i,1)[0]); setOrder(o); render();
+ // only redraw the dialog if it is actually open — this is also called from the
+ // right-click menu on a chip, where opening it would be a surprise
+ if(document.getElementById('vw').classList.contains('on')) labelMgr();}
+
+function badgeList(all){
+ const hid=new Set(ST.hidden||[]);
+ const built=CFG.badges.map(b=>({id:b.id,label:b.label,icon:b.icon||'🏷️',toggle:b.toggle||b.label,
+   bg:b.bg,fg:b.fg,title:b.title||'',has:ref=>SETS[b.id].has(ref)}));
+ const mine=ordered().map(id=>{const l=ST.labels[id],s=memb(id);
+   return {id,label:l.name,icon:l.icon===undefined?'🏷️':l.icon,toggle:l.name,bg:l.bg,fg:l.fg,user:true,
+           title:s.size+' ticket'+(s.size===1?'':'s'),has:ref=>s.has(ref)};});
+ const out=built.concat(mine);
+ return all?out:out.filter(b=>!hid.has(b.id));}
+function tag(ids,labelId,on){
+ const cur=new Set(ST.member[labelId]||[]);
+ ids.forEach(r=>on?cur.add(r):cur.delete(r));
+ ST.member[labelId]=[...cur]; save();}
+document.getElementById('ttl').textContent=CFG.title;
+document.title=CFG.title;
+const F={id:0,ref:1,st:2,cr:3,up:4,mod:5,req:6,eid:7,dep:8,pl:9,cat:10,pri:11,prob:12,act:13,sol:14,
+         cg:15,zc:16,att:17,full:18,inv:19,rPri:20,rSys:21,rMod:22,rCat:23};
+const dv=(k,i)=>(D[k]&&D[k][i]!=null)?D[k][i]:'';
+const S=r=>dv('s',r[F.st]), SYS=r=>dv('g2',r[F.rSys]);
+const SC={'Close Case':'s0','Open':'s1','Assign':'s2','Troubleshoot':'s3'};
+const fullRef=r=>[r[F.ref],dv('g1',r[F.rPri]),dv('g2',r[F.rSys]),dv('g3',r[F.rMod]),dv('g4',r[F.rCat])].filter(Boolean).join(' - ');
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+let sortK=3, sortD=-1;
+
+// ---- multi-select filters -------------------------------------------------
+// Year is just another multi-select, not a <select> — a native dropdown draws its
+// own arrow in the OS style and will never match the others sitting beside it.
+const FDEF=[{id:'st',label:'Status',get:S},{id:'yr',label:'Year',get:r=>(r[F.cr]||'').slice(0,4)},
+ {id:'sys',label:'System',get:SYS},
+ {id:'mod',label:'Module',get:r=>dv('m',r[F.mod])},{id:'dep',label:'Department',get:r=>dv('t',r[F.dep])},
+ {id:'pl',label:'Plant',get:r=>dv('p',r[F.pl])},{id:'cat',label:'Category',get:r=>dv('c',r[F.cat])},
+ {id:'pri',label:'Priority',get:r=>dv('y',r[F.pri])}];
+const SEL={}; FDEF.forEach(f=>SEL[f.id]=new Set());
+const TOG={};
+function drawTogs(){
+ const bl=badgeList();
+ document.getElementById('togs').innerHTML=bl.map(b=>
+  `<span class="tog${TOG[b.id]===true?' on':TOG[b.id]===-1?' ex':''}" data-b="${b.id}"
+    title="${esc(b.title)}${TOG[b.id]===-1?' — currently hidden from the list':''}">${
+    TOG[b.id]===-1?'<span class="exm">−</span> ':(b.icon?`<span>${b.icon}</span> `:'')}${esc(b.toggle)}</span>`).join('');
+ document.querySelectorAll('.tog[data-b]').forEach(el=>{const id=el.dataset.b;
+  if(TOG[id]===undefined)TOG[id]=false;
+  // Left-click stays a plain two-way toggle. Excluding is a rarer thing to want,
+  // so it lives on the right-click menu rather than making every click a guess
+  // about which of three states you are now in.
+  el.onclick=()=>{TOG[id]=(TOG[id]===true)?false:true;drawTogs();render();};
+  el.oncontextmenu=e=>{e.preventDefault();labMenu(e,bl.find(x=>x.id===id));};});
+ const sel=document.getElementById('addl');
+ const mine=Object.keys(ST.labels);
+ sel.innerHTML=mine.length?mine.map(id=>`<option value="${id}">${esc(ST.labels[id].name)}</option>`).join('')
+                          :'<option value="">— create a label first —</option>';}
+document.getElementById('filters').innerHTML=FDEF.map(f=>{
+ const vals=[...new Set(R.map(f.get))].filter(v=>v!=='').sort();
+ return `<span class="ms" id="ms_${f.id}"><button class="msb" data-t="${f.id}">${f.label}<span class="n" style="display:none">0</span> ▾</button>
+ <span class="msp">${vals.map(v=>`<label><input type="checkbox" value="${esc(v)}">${esc(v)}</label>`).join('')}
+ <span class="msa"><a data-all="${f.id}">Select all</a><a class="x" data-none="${f.id}">Unselect all</a></span></span></span>`;}).join(' ');
+
+FDEF.forEach(f=>{
+ const box=document.getElementById('ms_'+f.id);
+ box.querySelector('.msb').onclick=e=>{e.stopPropagation();
+  document.querySelectorAll('.ms').forEach(m=>{if(m!==box)m.classList.remove('open')});box.classList.toggle('open');};
+ box.querySelector('.msp').onclick=e=>e.stopPropagation();
+ box.querySelectorAll('input').forEach(cb=>cb.onchange=()=>{
+  cb.checked?SEL[f.id].add(cb.value):SEL[f.id].delete(cb.value); sync(f.id); render();});
+ box.querySelector('[data-all]').onclick=()=>{box.querySelectorAll('input').forEach(cb=>{cb.checked=true;SEL[f.id].add(cb.value)});sync(f.id);render();};
+ box.querySelector('[data-none]').onclick=()=>{box.querySelectorAll('input').forEach(cb=>cb.checked=false);SEL[f.id].clear();sync(f.id);render();};
+});
+document.addEventListener('click',()=>document.querySelectorAll('.ms').forEach(m=>m.classList.remove('open')));
+function sync(id){const n=document.querySelector(`#ms_${id} .n`);
+ n.textContent=SEL[id].size; n.style.display=SEL[id].size?'inline-block':'none';
+ document.getElementById('ms_'+id).classList.toggle('act',SEL[id].size>0);}
+
+// ---- date filter ----------------------------------------------------------
+// A native <input type=date> refuses partial input, which is why typing "2025"
+// did nothing and why backspacing out a wrong month was so awkward. Plain text
+// boxes instead, accepting whatever shape the date is typed in.
+// The date boxes are for a specific span; whole years live in the Year filter.
+let DR=null;
+function readDates(){
+ const a=document.getElementById('d1').value, z=document.getElementById('d2').value;
+ if(a&&z)       DR={lo:a,hi:z};
+ else if(a)     DR={lo:a,hi:a};                      // one date = that day only
+ else if(z)     DR={lo:'0000-01-01',hi:z};
+ else           DR=null;
+}
+
+// ---- filtering ------------------------------------------------------------
+function rows(){
+ const q=document.getElementById('q').value.toLowerCase().trim();
+ return R.filter(r=>{
+  for(const f of FDEF){ if(SEL[f.id].size && !SEL[f.id].has(f.get(r))) return false; }
+  // TOG has three states, not two:
+  //    true  show ONLY the tickets carrying this label
+  //   -1     show everything EXCEPT them  ("I've dealt with these, show me the rest")
+  //   false  ignore the label
+  for(const b of badgeList()){
+   const t=TOG[b.id];
+   if(t===true && !b.has(r[F.ref])) return false;
+   if(t===-1   &&  b.has(r[F.ref])) return false; }
+  if(DR){ const d=r[F.cr]||''; if(d<DR.lo||d>DR.hi) return false; }
+  if(!q)return true;
+  return [fullRef(r),r[F.cr],dv('m',r[F.mod]),dv('q',r[F.req]),dv('e',r[F.eid]),dv('t',r[F.dep]),dv('p',r[F.pl]),
+   dv('c',r[F.cat]),S(r),r[F.prob],r[F.act],r[F.sol],ST.remarks[r[F.ref]]||'',(r[F.att]||[]).map(a=>a[0]).join(' ')]
+   .join(' ').toLowerCase().includes(q);
+ }).sort((a,b)=>{
+  if(sortK===-1){ const x=days(a[F.cr]),y=days(b[F.cr]);
+   return ((x==null?-1:x)-(y==null?-1:y))*sortD; }
+  const M={5:'m',6:'q',8:'t',9:'p',10:'c',11:'y',2:'s',21:'g2'};
+  const g=r=>M[sortK]?dv(M[sortK],r[sortK]):r[sortK];
+  return String(g(a)).localeCompare(String(g(b)))*sortD;});
+}
+const OPENS=['Open','Assign','Troubleshoot'];
+function cards(rs){
+ const n=s=>rs.filter(r=>S(r)===s).length, cl=n('Close Case'), tot=rs.length;
+ const filtered=tot!==R.length;
+ document.getElementById('cards').innerHTML=
+  `<div class="c${filtered?' hl':''}" data-st="*" title="Show everything again"><b>${tot}</b><span>${filtered?'Filtered':'Total tickets'}</span></div>
+   <div class="c${filtered?' hl':''}" data-st="Close Case"><b>${cl}</b><span>Closed${filtered?' (filtered)':''}</span></div>
+   <div class="c" data-st="open"><b>${tot-cl}</b><span>Still open</span></div>
+   <div class="c" data-st="Open"><b>${n('Open')}</b><span>Open</span></div>
+   <div class="c" data-st="Assign"><b>${n('Assign')}</b><span>Assign</span></div>
+   <div class="c" data-st="Troubleshoot"><b>${n('Troubleshoot')}</b><span>Troubleshoot</span></div>
+   ${filtered?`<div class="c" data-st="*"><b>${R.length}</b><span>of total</span></div>`:''}`;
+ // clicking a count sets the Status filter to match it
+ document.querySelectorAll('#cards .c[data-st]').forEach(c=>{c.style.cursor='pointer';
+  c.onclick=()=>{const v=c.dataset.st; SEL.st.clear();
+   if(v==='open') OPENS.forEach(s=>SEL.st.add(s));
+   else if(v!=='*') SEL.st.add(v);
+   document.querySelectorAll('#ms_st input').forEach(cb=>cb.checked=SEL.st.has(cb.value));
+   sync('st'); render();};});
+}
+function stemOf(n){return n.replace(/\.[^.]*$/,'').toLowerCase().replace(/[^a-z0-9]/g,'');}
+function attBtn(ref,pair){
+ const name=pair[0], st=stemOf(name), hit=(LOCAL[ref]||{})[st], uri=(PREV[ref]||{})[st];
+ const row=R.find(x=>x[F.ref]===ref), url=row?CFG.ticketUrl.replace("{id}",row[F.id]):'';
+ const ext=name.split('.').pop().toLowerCase();
+ const icon= /^(png|jpe?g|gif|webp)$/.test(ext)?'🖼️' : ext==='pdf'?'📕'
+           : /^(xlsx?|xlsm|csv|tsv)$/.test(ext)?'📊' : ext==='msg'?'✉️'
+           : ext==='mp4'?'🎬' : /^(docx?)$/.test(ext)?'📝':'📄';
+ // 1. the real file sitting beside this page — no login, no V-ONE.
+ //
+ //    A browser only renders a handful of types. Navigating to anything else
+ //    gives a blank tab, which is what an .eml did: Chrome has no mail viewer,
+ //    so it showed nothing and the file never reached Outlook. Everything the
+ //    browser cannot display gets `download`, so it lands in Downloads and
+ //    Windows opens it with whatever owns that extension.
+ const rel=(FILES[ref]||{})[st], alt=(ALTS[ref]||{})[st];
+ if(rel){
+  const viewable=/^(png|jpe?g|gif|webp|bmp|svg|pdf|txt|mp4)$/.test(ext);
+  // > [!note] Why there is no `download` attribute here
+  // Chrome ignores it on file:// links, and there is no way round that: fetch()
+  // and XHR are both blocked on file://, so the page cannot make a blob either.
+  // What Chrome DOES do is download anything it cannot render — .msg, .xlsx,
+  // .docx all land in Downloads and open in the right app. The one exception
+  // was .eml, which it maps to message/rfc822, tries to render, and shows as a
+  // blank tab. So the .msg is what a click gets, and the .eml sits beside it.
+  const main=`<a class="att lnk" href="${rel}" ${viewable?'target="_blank" rel="noopener"':''}
+    title="${viewable?'Opens here — no V-ONE login needed':'Downloads, then opens in the app that owns it — no V-ONE login needed'}"
+    >${icon} ${esc(name)}<span class="zh">${viewable?'· open ⤓':'· downloads, opens in your app'}</span></a>`;
+  // For anyone without Outlook. Deliberately not the main link: Chrome shows a
+  // .eml as an empty page instead of downloading it, so it needs Save link as.
+  return main + (alt
+    ? ` <a class="att lnk alt" href="${alt}" title="No Outlook? Right-click this and choose Save link as — a .eml opens in Windows Mail or Thunderbird">.eml</a>`
+    : '');
+ }
+ // 2. an image preview baked into the page
+ if(uri) return `<span class="att" data-u="${st}" data-r="${esc(ref)}" data-n="${esc(name)}">${icon} ${esc(name)}<span class="zh">· click to zoom</span></span>`;
+ // 3. nothing local. In a share pack, a V-ONE link is worse than useless — most
+ //    of the people it goes to have no V-ONE account, so it looks like a broken
+ //    promise. Say plainly that the file is not in the pack instead.
+ if(CFG.packNote)
+  return `<span class="att no" title="This file was not available when the pack was built">${icon} ${esc(name)}<span class="zh">· not included${CFG.owner?' — ask '+esc(CFG.owner)+' for it':''}</span></span>`;
+ return `<a class="att lnk" href="${url}" target="_blank" rel="noopener" title="Opens the ticket in V-ONE — download the file from there">${icon} ${esc(name)}<span class="zh">· open in V-ONE ↗</span></a>`;
+}
+function showPrev(ref,st,name){
+ const vw=document.getElementById('vw'),bd=document.getElementById('vbd');
+ document.getElementById('vnm').textContent=name; vw.classList.add('on');
+ const uri=(PREV[ref]||{})[st];
+ const row=R.find(x=>x[F.ref]===ref), url=row?CFG.ticketUrl.replace("{id}",row[F.id]):'';
+ bd.innerHTML=`<div class="zwrap"><img id="zimg" class="zoomable" src="${uri}"></div>
+  <div class="clip" style="margin-top:8px">Click the image to zoom to full size, click again to fit.
+  For the original file, <a href="${url}" target="_blank" rel="noopener">open the ticket in V-ONE ↗</a></div>`;
+ const im=document.getElementById('zimg');
+ im.onclick=()=>{im.classList.toggle('zoomed'); im.parentElement.classList.toggle('scroll');};
+}
+function showPath(name,path){
+ const vw=document.getElementById('vw'),bd=document.getElementById('vbd');
+ document.getElementById('vnm').textContent=name; vw.classList.add('on');
+ bd.innerHTML=`<p style="margin:4px 0 10px">No inline preview for this file type. Open it from:</p>
+  <code style="display:block;padding:9px 11px;background:#f3f4f6;border-radius:6px;word-break:break-all">${esc(path)}</code>
+  <button style="margin-top:10px" onclick="navigator.clipboard.writeText(${JSON.stringify(path)}).then(()=>this.textContent='Copied')">Copy path</button>`;
+}
+function closeV(){document.getElementById('vw').classList.remove('on');document.getElementById('vbd').innerHTML='';}
+document.getElementById('vw').onclick=e=>{if(e.target.id==='vw')closeV()};
+const PICK=new Set();
+function selbar(){
+ const b=document.getElementById('selbar');
+ b.classList.toggle('on',PICK.size>0||document.body.classList.contains('pick'));
+ document.getElementById('seln').textContent=PICK.size?PICK.size+' selected':'Click rows to select';}
+function render(){
+ const rs=rows(); cards(rs); drawTogs();
+ const bl=badgeList();
+ let h='';
+ for(const r of rs){const st=S(r),sy=SYS(r),atts=r[F.att]||[],ref=r[F.ref];
+  const rm=ST.remarks[ref]||'', ag=days(r[F.cr]), idl=days(r[F.up]);
+  const closed=st==='Close Case';
+  h+=`<tr class="r${PICK.has(ref)?' on':''}" data-id="${r[F.id]}" data-ref="${esc(ref)}">
+   <td class="sel"><input type="checkbox" class="ck"${PICK.has(ref)?' checked':''}></td>
+   <td><a class="tk" href="${CFG.ticketUrl.replace("{id}",r[F.id])}" target="_blank" rel="noopener">${esc(ref)}</a>${bl.map(b=>b.has(ref)?` <span class="pill" style="background:${b.bg};color:${b.fg}" title="${esc(b.title||'')}">${esc((b.user&&b.icon?b.icon+' ':'')+b.label)}</span>`:'').join('')}</td>
+   <td><span class="sys ${sy.indexOf('MES')>=0||sy.indexOf('MPS')>=0?'sysM':sy==='V_ONE'?'sysV':''}">${esc(sy||'—')}</span></td>
+   <td>${esc(r[F.cr])}</td>
+   <td class="age"><b class="${closed?'a0':ageCls(ag)}">${human(ag)}</b>
+    <span class="idle">${closed?'closed':'idle '+human(idl)}</span></td>
+   <td>${esc(dv('m',r[F.mod]))}</td><td>${esc(dv('q',r[F.req]))}</td>
+   <td>${esc(dv('t',r[F.dep]))}</td><td>${esc(dv('p',r[F.pl]))}</td><td>${esc(dv('c',r[F.cat]))}</td>
+   <td class="pri p${esc(dv('y',r[F.pri]))}">${esc(dv('y',r[F.pri]))}</td>
+   <td><span class="pill ${SC[st]||''}">${esc(st)}</span></td>
+   <td class="desc">${esc(r[F.prob]||'—')}</td>
+   <td class="rmk"><div class="rmkbox${rm?' has':''}" contenteditable="true" spellcheck="false">${esc(rm)}</div></td>
+   <td>${atts.length?atts.length+' 📎':''}</td></tr>`;}
+ document.getElementById('tb').innerHTML=h;
+ document.getElementById('none').style.display=rs.length?'none':'block';
+ document.querySelectorAll('tr.r').forEach(tr=>{
+  tr.onclick=e=>{
+   if(e.target.closest('a,.rmkbox'))return;
+   if(document.body.classList.contains('pick')){        // in select mode a click picks
+    if(e.target.classList.contains('ck'))return;        // (the box handles itself)
+    const on=!PICK.has(tr.dataset.ref);
+    on?PICK.add(tr.dataset.ref):PICK.delete(tr.dataset.ref);
+    tr.classList.toggle('on',on); tr.querySelector('.ck').checked=on; selbar(); return;}
+   expand(tr);};
+  tr.oncontextmenu=e=>{e.preventDefault(); rowMenu(e,tr.dataset.ref);};
+  const ck=tr.querySelector('.ck');
+  ck.onclick=e=>{e.stopPropagation();
+   ck.checked?PICK.add(tr.dataset.ref):PICK.delete(tr.dataset.ref);
+   tr.classList.toggle('on',ck.checked); selbar();};
+  const box=tr.querySelector('.rmkbox');
+  box.onblur=()=>{const v=box.innerText.replace(/ /g,' ').trim();
+   if((ST.remarks[tr.dataset.ref]||'')===v)return;
+   if(v)ST.remarks[tr.dataset.ref]=v; else delete ST.remarks[tr.dataset.ref];
+   box.classList.toggle('has',!!v); save();};
+  box.onkeydown=e=>{if(e.key==='Escape')box.blur();};
+ });
+ selbar();
+}
+function stageTable(r){
+ const st=stages(r[F.ref],S(r)==='Close Case',S(r));
+ if(!st) return '<div class="clip">No stage history for this ticket in the snapshot.</div>';
+ const d=t=>t==null?'—':ymd(t);
+ const tot=st.reduce((a,s)=>a+s.ms,0);
+ return `<table class="stg"><thead><tr><th>Stage</th><th>From</th><th>Until</th><th>Time in stage</th></tr></thead>
+  <tbody>${st.map(s=>`<tr${s.open?' class="now"':''}><td>${esc(s.stage)}${s.open?' <span class="clip">— current</span>':''}</td>
+   <td>${d(s.from)}</td><td>${s.to?d(s.to):'now'}</td><td><b>${durD(s.ms)}</b></td></tr>`).join('')}
+  <tr class="tot"><td colspan="3">Total</td><td><b>${durD(tot)}</b> <span class="clip">· ${dur(tot)}</span></td></tr></tbody></table>`;
+}
+function expand(tr){
+ const nx=tr.nextElementSibling; if(nx&&nx.classList.contains('exp')){nx.remove();return;}
+ document.querySelectorAll('tr.exp').forEach(x=>x.remove());
+ const r=R.find(x=>String(x[F.id])===tr.dataset.id); if(!r)return;
+ const atts=r[F.att]||[], blk=(t,v)=>v?`<div class="blk"><h4>${t}</h4>${esc(v)}</div>`:'';
+ const e=document.createElement('tr'); e.className='exp';
+ const ag=days(r[F.cr]), idl=days(r[F.up]);
+ e.innerHTML=`<td colspan="15">
+  <div class="dl">
+   <dt>Ticket reference</dt><dd><b>${esc(fullRef(r))}</b></dd>
+   <dt>Requestor</dt><dd>${esc(dv('q',r[F.req]))}${dv('e',r[F.eid])?' ('+esc(dv('e',r[F.eid]))+')':''}</dd>
+   <dt>Department · Plant</dt><dd>${esc(dv('t',r[F.dep]))} · ${esc(dv('p',r[F.pl]))||'—'}</dd>
+   <dt>System · Module</dt><dd>${esc(SYS(r))} · ${esc(dv('m',r[F.mod]))}</dd>
+   <dt>Category</dt><dd>${esc(dv('c',r[F.cat]))}</dd>
+   <dt>Priority · Status</dt><dd>${esc(dv('y',r[F.pri]))} · ${esc(S(r))}</dd>
+   <dt>Opened · Updated</dt><dd>${esc(r[F.cr])} · ${esc(r[F.up])}</dd>
+   <dt>Age</dt><dd><b>${human(ag)}</b> since raised${S(r)==='Close Case'?' (now closed)'
+     :` · <b>${human(idl)}</b> since anything last changed`}${stageTable(r)}</dd>
+   ${dv('g',r[F.cg])||dv('cg',r[F.cg])?`<dt>Case category</dt><dd>${esc(dv('cg',r[F.cg])||dv('g',r[F.cg]))}</dd>`:''}
+   ${dv('z',r[F.zc])?`<dt>Closing category</dt><dd>${esc(dv('z',r[F.zc]))}</dd>`:''}
+   <dt>Open in V-ONE</dt><dd><a class="tk" href="${CFG.ticketUrl.replace("{id}",r[F.id])}" target="_blank" rel="noopener">${esc(CFG.ticketUrl.replace("{id}",r[F.id]).replace(/^https?:\/\//,""))}</a></dd>
+  </div>
+  ${blk('Problem description',r[F.prob])}
+  ${r[F.full]?'':'<div class="clip">'+esc(CFG.previewNote||'Closed and outside the detailed set — description shown as a preview only.')+'</div>'}
+  ${blk('Action taken so far',r[F.act])}${blk('Solution explanation',r[F.sol])}
+  <div class="blk"><h4>Attached files (${atts.length})</h4>
+   ${atts.length?atts.map(a=>attBtn(r[F.ref],a)).join(''):'<span class="clip">None</span>'}
+   ${atts.length&&Object.keys(FILES).length&&!CFG.packNote?
+     '<div class="clip" style="margin-top:7px">These open from your own folder. '+
+     'If you are reading this inside Claude rather than from <b>tracker.html</b> in Explorer, '+
+     'the links cannot reach your disk — open the file from the folder instead.</div>':''}</div></td>`;
+ tr.after(e);
+ e.querySelectorAll('.att[data-u]').forEach(b=>b.onclick=()=>showPrev(b.dataset.r,b.dataset.u,b.dataset.n));
+}
+function parseDelim(txt,sep){
+ const cells=[];let row=[],cur='',qq=false;
+ for(let i=0;i<txt.length;i++){const ch=txt[i];
+  if(qq){ if(ch==='"'&&txt[i+1]==='"'){cur+='"';i++;} else if(ch==='"'){qq=false;} else cur+=ch; }
+  else if(ch==='"')qq=true;
+  else if(ch===sep){row.push(cur);cur='';}
+  else if(ch==='\n'){row.push(cur);cells.push(row);row=[];cur='';}
+  else if(ch!=='\r')cur+=ch;}
+ if(cur!==''||row.length){row.push(cur);cells.push(row);}
+ return cells;}
+function tableHTML(cells,path,note){
+ const head=cells.shift()||[];
+ const w=Math.max(head.length,...cells.map(r=>r.length));
+ const pad=r=>{const c=r.slice();while(c.length<w)c.push('');return c;};
+ return `<div style="max-height:76vh;overflow:auto"><table class="csvt">
+  <thead><tr>${pad(head).map(c=>`<th>${esc(c)}</th>`).join('')}</tr></thead>
+  <tbody>${cells.map(r=>`<tr>${pad(r).map(c=>`<td>${esc(c)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>
+  <div class="clip" style="margin-top:8px">${cells.length} rows${note||''} · the original file is unchanged at <code>${esc(path)}</code> — open it there to edit.</div>`;}
+
+async function bash(cmd){
+ const res=await window.cowork.callMcpTool('mcp__workspace__bash',{command:cmd});
+ const out=(res.structuredContent&&(res.structuredContent.output||res.structuredContent.stdout))||
+           (res.content&&res.content[0]&&res.content[0].text)||'';
+ return {out:String(out),err:!!res.isError};}
+
+async function view(path,name){
+ const vw=document.getElementById('vw'),bd=document.getElementById('vbd');
+ document.getElementById('vnm').textContent=name; bd.innerHTML='<p>Loading…</p>'; vw.classList.add('on');
+ const q=path.replace(/'/g,"'\\''");
+ const ext=name.split('.').pop().toLowerCase();
+ try{
+  // Excel: converted to a table for VIEWING only. The .xlsx on disk is never altered.
+  if(ext==='xlsx'||ext==='xlsm'||ext==='xls'){
+   const py="import openpyxl,sys;"
+    +"wb=openpyxl.load_workbook(r'''"+path+"''',data_only=True);"
+    +"ws=wb[wb.sheetnames[0]];"
+    +"rows=[['' if c is None else str(c) for c in r] for r in ws.iter_rows(max_row=400,values_only=True)];"
+    +"print(wb.sheetnames[0]);"
+    +"print('\\n'.join('\\t'.join(x.replace('\\t',' ').replace('\\n',' ') for x in r) for r in rows))";
+   const r=await bash(`python3 -c "$(cat <<'PYX'\n${py}\nPYX\n)"`);
+   if(r.err||!r.out.trim()){bd.innerHTML=`<p>Could not read that workbook. Open it from <code>${esc(path)}</code>.</p>`;return;}
+   const lines=r.out.replace(/\n$/,'').split('\n'); const sheet=lines.shift();
+   bd.innerHTML=tableHTML(parseDelim(lines.join('\n')+'\n','\t'),path,` · sheet “${esc(sheet)}” (first 400 rows)`);
+   return;}
+  const r=await bash(`base64 -w0 '${q}'`);
+  let b64=r.out.trim().replace(/\s+/g,'');
+  if(!b64||r.err){bd.innerHTML='<p>Could not read that file.</p>';return;}
+  if(ext==='csv'||ext==='tsv'){
+   const txt=new TextDecoder().decode(Uint8Array.from(atob(b64),c=>c.charCodeAt(0)));
+   const first=txt.split('\n')[0];
+   const sep=ext==='tsv'?'\t':(first.split(';').length>first.split(',').length?';':',');
+   bd.innerHTML=tableHTML(parseDelim(txt,sep),path,'');
+   return;}
+  const mime={png:'image/png',jpg:'image/jpeg',jpeg:'image/jpeg',gif:'image/gif',webp:'image/webp',
+    pdf:'application/pdf',mp4:'video/mp4',txt:'text/plain'}[ext];
+  if(!mime){bd.innerHTML=`<p>No in-browser preview for .${esc(ext)} files. Open it from <code>${esc(path)}</code>.</p>`;return;}
+  const src=`data:${mime};base64,${b64}`;
+  bd.innerHTML = mime.startsWith('image/')?`<img src="${src}">`
+   : mime==='video/mp4'?`<video src="${src}" controls style="max-width:86vw;max-height:78vh"></video>`
+   : `<iframe src="${src}"></iframe>`;
+ }catch(err){bd.innerHTML='<p>Preview failed: '+esc(err&&err.message||err)+'</p>';console.error(err);}
+}
+function closeV(){document.getElementById('vw').classList.remove('on');document.getElementById('vbd').innerHTML='';}
+document.getElementById('vw').onclick=e=>{if(e.target.id==='vw')closeV()};
+
+// ---- label manager --------------------------------------------------------
+function labelMgr(){
+ const vw=document.getElementById('vw'),bd=document.getElementById('vbd');
+ document.getElementById('vnm').textContent='Labels'; vw.classList.add('on');
+ const ids=ordered(), hid=new Set(ST.hidden||[]);
+ const hiddenOnes=badgeList(true).filter(b=>hid.has(b.id));
+ bd.innerHTML=`<div id="lm">${ids.length?ids.map((id,i)=>{const l=ST.labels[id],n=(ST.member[id]||[]).length;
+   return `<div class="lrow" data-id="${id}" draggable="true">
+    <span class="grip" title="Drag to reorder">⠿</span>
+    <span class="pill" style="background:${l.bg};color:${l.fg}">${esc((l.icon||'')+' '+l.name)}</span>
+    <span class="nm mini">${n} ticket${n===1?'':'s'}</span>
+    <span class="dz ar${i===0?' off':''}" data-up="${id}" title="Move up">↑</span>
+    <span class="dz ar${i===ids.length-1?' off':''}" data-dn="${id}" title="Move down">↓</span>
+    <span class="dz" data-ed="${id}" style="color:var(--bd)">Edit</span>
+    <span class="dz" data-del="${id}">Delete</span></div>`;}).join('')
+   :'<div class="mini">No labels yet.</div>'}
+  <div class="newl"><button id="lad" class="pri-b">Create a label</button></div>
+  ${hiddenOnes.length?`<div class="mini" style="margin-top:14px">Hidden:</div>`+hiddenOnes.map(b=>
+    `<div class="lrow"><span class="pill" style="background:${b.bg};color:${b.fg}">${esc(b.label)}</span>
+     <span class="nm"></span><span class="dz" data-show="${b.id}" style="color:var(--bd)">Show again</span></div>`).join(''):''}
+  <div class="mini" style="margin-top:12px">Drag a row, or use ↑ ↓, to change the order they appear in the
+  filter bar. Right-click a chip there to show only its tickets, or to <b>hide</b> them and see the rest.
+  Right-click a ticket row to tag it.</div></div>`;
+ // ---- drag to reorder ----------------------------------------------------
+ // Arrows do the same job and are here because drag is fiddly with a trackpad
+ // and impossible on a touchscreen. Neither is the "real" one.
+ let drag=null;
+ bd.querySelectorAll('.lrow[data-id]').forEach(row=>{
+  row.ondragstart=e=>{drag=row.dataset.id; row.classList.add('dragging');
+   e.dataTransfer.effectAllowed='move'; try{e.dataTransfer.setData('text/plain',drag);}catch(_){}};
+  row.ondragend=()=>{row.classList.remove('dragging');
+   bd.querySelectorAll('.lrow').forEach(r=>r.classList.remove('over'));};
+  row.ondragover=e=>{e.preventDefault(); if(row.dataset.id!==drag) row.classList.add('over');};
+  row.ondragleave=()=>row.classList.remove('over');
+  row.ondrop=e=>{e.preventDefault(); row.classList.remove('over');
+   const to=row.dataset.id; if(!drag||drag===to) return;
+   const o=ordered(); o.splice(o.indexOf(to),0,o.splice(o.indexOf(drag),1)[0]);
+   setOrder(o); render(); labelMgr();};});
+ bd.querySelectorAll('[data-up]').forEach(el=>el.onclick=()=>move(el.dataset.up,-1));
+ bd.querySelectorAll('[data-dn]').forEach(el=>el.onclick=()=>move(el.dataset.dn, 1));
+ bd.querySelectorAll('[data-ed]').forEach(el=>el.onclick=()=>{
+  const L=ST.labels[el.dataset.ed];
+  labelForm('Edit label',L,v=>{Object.assign(L,v);save();render();labelMgr();});});
+ bd.querySelectorAll('[data-del]').forEach(el=>el.onclick=()=>{
+  const id=el.dataset.del;
+  ask('Delete label','Delete "'+ST.labels[id].name+'"?\n\nThe tickets themselves are not affected.',
+   ()=>{delete ST.labels[id];delete ST.member[id];delete TOG[id];save();render();labelMgr();},'Delete');});
+ bd.querySelectorAll('[data-show]').forEach(el=>el.onclick=()=>{
+  ST.hidden=(ST.hidden||[]).filter(x=>x!==el.dataset.show); save(); render(); labelMgr();});
+ bd.querySelector('#lad').onclick=()=>labelForm('New label',{},v=>{
+  const id=newId(); ST.labels[id]={name:v.name,icon:v.icon,bg:v.bg,fg:v.fg};
+  ST.member[id]=[]; save(); render(); labelMgr();});
+}
+document.getElementById('lbtn').onclick=labelMgr;
+
+// ---- right-click menu -----------------------------------------------------
+const CM=document.getElementById('cm');
+function hideCM(){CM.classList.remove('on');}
+function showCM(ev,items){
+ CM.innerHTML=items.map(i=>i.sep?'<div class="sep"></div>'
+  :i.head?`<div class="hd">${esc(i.head)}</div>`
+  :`<div class="it${i.dis?' dis':''}${i.danger?' x':''}" data-i="${i.k}">${
+     i.colour?`<span class="dot" style="background:${i.colour}"></span>`:''}${esc(i.t)}</div>`).join('');
+ CM.classList.add('on');
+ const w=CM.offsetWidth,h=CM.offsetHeight;
+ CM.style.left=Math.min(ev.clientX,innerWidth-w-8)+'px';
+ CM.style.top =Math.min(ev.clientY,innerHeight-h-8)+'px';
+ CM.querySelectorAll('.it[data-i]').forEach(el=>{
+  const it=items.find(x=>String(x.k)===el.dataset.i);
+  if(it&&it.run&&!it.dis) el.onclick=()=>{hideCM();it.run();};});
+}
+document.addEventListener('click',hideCM);
+document.addEventListener('scroll',hideCM,true);
+
+function rowMenu(ev,ref){
+ const targets=PICK.size&&PICK.has(ref)?[...PICK]:[ref];
+ const what=targets.length>1?targets.length+' tickets':ref;
+ const ids=Object.keys(ST.labels);
+ const items=[{head:'Label '+what}];
+ if(!ids.length) items.push({k:'none',t:'No labels yet — use the Labels button',dis:1});
+ ids.forEach(id=>{
+  const s=memb(id), all=targets.every(r=>s.has(r));
+  items.push({k:'t'+id,colour:ST.labels[id].bg,
+   t:(all?'✓ ':'    ')+(ST.labels[id].icon||'')+' '+ST.labels[id].name,
+   run:()=>{tag(targets,id,!all);render();}});});
+ items.push({sep:1});
+ items.push({k:'new',t:'Create a label for '+what+'…',run:()=>
+  labelForm('New label',{},v=>{const id=newId();
+   ST.labels[id]={name:v.name,icon:v.icon,bg:v.bg,fg:v.fg};
+   ST.member[id]=targets.slice(); save(); render();})});
+ items.push({k:'clr',t:'Remove every label from '+what,danger:1,dis:!ids.length,
+  run:()=>{ids.forEach(id=>tag(targets,id,false));render();}});
+ showCM(ev,items);
+}
+function labMenu(ev,b){
+ if(!b.user){ // built-in badges come from the config; they can be put away, not edited
+  showCM(ev,[{head:b.label},
+   {k:'show',t:'Show only these tickets',run:()=>{TOG[b.id]=true;drawTogs();render();}},
+   {k:'ex',t:'Hide these tickets — show me the rest',run:()=>{TOG[b.id]=-1;drawTogs();render();}},
+   {k:'off',t:'Stop filtering by this',dis:!TOG[b.id],run:()=>{TOG[b.id]=false;drawTogs();render();}},
+   {sep:1},
+   {k:'hide',t:'Hide this label',danger:1,run:()=>{
+     ST.hidden=[...new Set([...(ST.hidden||[]),b.id])]; delete TOG[b.id]; save(); render();}},
+   {k:'i',t:'Built in — restore it from the Labels dialog',dis:1}]);
+  return; }
+ const id=b.id, L=ST.labels[id];
+ showCM(ev,[{head:L.name},
+  {k:'pick',t:'Pick tickets to add to this label…',run:()=>pickFor(id)},
+  {sep:1},
+  {k:'show',t:'Show only the tickets that have it',run:()=>{TOG[id]=true;drawTogs();render();}},
+  {k:'ex',t:'Hide these tickets — show me the rest',run:()=>{TOG[id]=-1;drawTogs();render();}},
+  {k:'off',t:'Stop filtering by this',dis:!TOG[id],run:()=>{TOG[id]=false;drawTogs();render();}},
+  {sep:1},
+  {k:'up',t:'Move left',dis:ordered().indexOf(id)===0,run:()=>move(id,-1)},
+  {k:'dn',t:'Move right',dis:ordered().indexOf(id)===ordered().length-1,run:()=>move(id,1)},
+  {sep:1},
+  {k:'ed',t:'Rename, icon and colour…',colour:L.bg,run:()=>
+    labelForm('Edit label',L,v=>{Object.assign(L,v);save();render();})},
+  {k:'del',t:'Delete this label',danger:1,run:()=>
+    ask('Delete label','Delete "'+L.name+'"?\n\nThe tickets themselves are not affected — only the label goes.',
+      ()=>{delete ST.labels[id];delete ST.member[id];delete TOG[id];save();render();},'Delete')}]);
+}
+// Start picking with this label already chosen, so tick-tick-tick → Add is the
+// whole gesture. Tickets already carrying it come pre-ticked so you can see
+// what is in the set and add to it rather than starting from nothing.
+function pickFor(id){
+ PICK.clear(); const s=memb(id);
+ rows().forEach(r=>{if(s.has(r[F.ref]))PICK.add(r[F.ref]);});
+ pickMode(true);
+ const sel=document.getElementById('addl'); sel.value=id;
+ document.getElementById('selbar').classList.add('on');}
+
+// ---- select mode ----------------------------------------------------------
+function pickMode(on){
+ document.body.classList.toggle('pick',on);
+ document.getElementById('pick').textContent=on?'Done selecting':'Select tickets';
+ if(!on){PICK.clear();document.getElementById('ckall').checked=false;}
+ render();}
+document.getElementById('pick').onclick=()=>pickMode(!document.body.classList.contains('pick'));
+document.getElementById('ckall').onclick=e=>{
+ const on=e.target.checked; rows().forEach(r=>on?PICK.add(r[F.ref]):PICK.delete(r[F.ref])); render();};
+document.getElementById('selx').onclick=()=>pickMode(false);
+document.getElementById('addb').onclick=()=>{
+ const id=document.getElementById('addl').value;
+ if(!id){labelMgr();return;}
+ tag([...PICK],id,true); render();};
+// Remove takes ONLY the label chosen in the dropdown. The first version looped
+// every label, so removing "tt" also stripped "kk" — exactly what Wei saw.
+document.getElementById('reml').onclick=()=>{
+ const id=document.getElementById('addl').value;
+ if(!PICK.size||!id)return;
+ tag([...PICK],id,false); render();};
+document.getElementById('remall').onclick=()=>{
+ if(!PICK.size)return;
+ Object.keys(ST.labels).forEach(id=>tag([...PICK],id,false)); render();};
+
+// ---- fold the header away --------------------------------------------------
+document.getElementById('fold').onclick=()=>{
+ const on=document.body.classList.toggle('fold');
+ document.getElementById('foldt').textContent=on?'Show the counts and filters':'Hide the counts and filters';
+ try{localStorage.setItem(LSKEY+'_fold',on?'1':'');}catch(e){}};
+try{ if(localStorage.getItem(LSKEY+'_fold')){document.body.classList.add('fold');
+  document.getElementById('foldt').textContent='Show the counts and filters';} }catch(e){}
+
+// ---- export the notes ------------------------------------------------------
+// One file, one direction. Two people editing two copies is not synchronisation,
+// and pretending otherwise is how a note gets silently overwritten.
+//
+// Every export is a COMPLETE snapshot, never a diff. That is what makes
+// "newest file wins" safe on the way back in: the newest file already contains
+// every older comment, so taking it can't lose one.
+function notesBlob(){
+ return {_what:'labels and comments for '+CFG.title,_when:new Date().toISOString(),
+         labels:ST.labels,member:ST.member,remarks:ST.remarks};}
+function download(obj,name){
+ const a=document.createElement('a');
+ a.href=URL.createObjectURL(new Blob([JSON.stringify(obj,null,1)],{type:'application/json'}));
+ a.download=name; a.click();}
+
+document.getElementById('exp').onclick=()=>{
+ download(notesBlob(),'notes.json');
+ ST.exportedAt=Date.now(); save(); banner();
+ say(BAKED&&!LSOK
+  ? 'Saved as notes.json.\n\nPut it in\n\n    '+(CFG.sendNotesTo||'V-ONE Tracker\\data\\incoming\\')+'\n\n'
+    +'and your comments appear for everyone on the next morning\'s refresh. They are added to '
+    +'whatever is already there; nothing is overwritten.\n\nRename it first if you like — '
+    +'"florence.json" is easier to trace than "notes.json".'
+  : 'Saved as notes.json.\n\nTo make these labels and comments part of the tracker itself — so the '
+    +'shared copy carries them too — put this file in\n\n    V-ONE Tracker\\data\\notes.json\n\n'
+    +'and run "2 - Refresh tracker.bat".','Notes exported');};
+
+// ---- auto-export -----------------------------------------------------------
+// The one step in the whole chain that a human can skip is the Export click, so
+// on Wei's own copy it is not a click any more. A few seconds after she stops
+// typing, the same complete snapshot lands in Downloads, and the next refresh
+// collects it. Nothing to remember means nothing to forget on a Tuesday.
+//
+// > [!note] Only on the local copy
+// > `autoExport` is set in clients/nsm.json and deliberately NOT in
+// > clients/nsm-share.json. A file dropped in a reader's own Downloads folder
+// > helps nobody and clutters their machine — R&D still export by hand, into
+// > the incoming folder, which is a deliberate act of sending something.
+//
+// A browser cannot write to a chosen folder. Downloads is the only destination
+// it is allowed to use, which is why the .bat collects from there rather than
+// the page writing straight to data\notes.json.
+let autoT=null, autoN=0;   // AUTO and AUTOMS are declared up with LSKEY
+function autoQueue(){
+ if(!AUTO) return;
+ clearTimeout(autoT);
+ autoT=setTimeout(autoRun,AUTOMS);          // restart on every keystroke: one
+}                                           // file per edit, not one per letter
+function autoRun(){
+ if(!AUTO||!unexported()) return;
+ try{
+  download(notesBlob(),'notes-'+CID+'.json');
+  ST.exportedAt=Date.now(); autoN++;
+  try{localStorage.setItem(LSKEY,JSON.stringify(ST));}catch(e){}
+  banner(); autoTick();
+ }catch(e){ /* a blocked download must never break the page */ }
+}
+function autoTick(){
+ const el=document.getElementById('autos'); if(!el) return;
+ el.textContent='saved for the next refresh · '+new Date().toLocaleTimeString();
+ el.classList.add('on'); clearTimeout(autoTick._t);
+ autoTick._t=setTimeout(()=>el.classList.remove('on'),4000);
+}
+// If she typed something and closed the tab before the timer fired, the change
+// is still in localStorage — so catch it on the way back in.
+if(AUTO&&unexported()) setTimeout(autoRun,1500);
+window.addEventListener('beforeunload',()=>{ if(AUTO&&unexported()) autoRun(); });
+
+document.getElementById('q').addEventListener('input',render);
+
+['d1','d2'].forEach(id=>document.getElementById(id)
+ .addEventListener('change',()=>{readDates();render();}));
+document.getElementById('clr').onclick=()=>{document.getElementById('q').value='';
+ document.getElementById('d1').value=''; document.getElementById('d2').value='';
+ readDates();
+ document.querySelectorAll('.tog[data-b]').forEach(el=>{TOG[el.dataset.b]=false;});
+ drawTogs();
+ FDEF.forEach(f=>{SEL[f.id].clear();document.querySelectorAll(`#ms_${f.id} input`).forEach(cb=>cb.checked=false);sync(f.id);});render();};
+document.querySelectorAll('th[data-k]').forEach(th=>th.onclick=()=>{const k=+th.dataset.k;sortD=(k===sortK)?-sortD:1;sortK=k;render();});
+document.getElementById('csv').onclick=()=>{
+ const H=['Reference ID','Ticket','System','Opened','Updated','Age (days)','Idle (days)','Module','Requestor',
+  'Employee ID','Department','Plant','Category','Priority','Status','Problem description','Action taken',
+  'Solution','Comment','Labels','Attachments'];
+ const qq=s=>'"'+String(s==null?'':s).replace(/"/g,'""')+'"';
+ const bl=badgeList();
+ const L=[H.map(qq).join(',')].concat(rows().map(r=>[fullRef(r),r[F.ref],SYS(r),r[F.cr],r[F.up],
+  days(r[F.cr]),days(r[F.up]),dv('m',r[F.mod]),
+  dv('q',r[F.req]),dv('e',r[F.eid]),dv('t',r[F.dep]),dv('p',r[F.pl]),dv('c',r[F.cat]),dv('y',r[F.pri]),S(r),
+  r[F.prob],r[F.act],r[F.sol],ST.remarks[r[F.ref]]||'',
+  bl.filter(b=>b.has(r[F.ref])).map(b=>b.label).join('; '),
+  (r[F.att]||[]).map(a=>a[0]).join('; ')].map(qq).join(',')));
+ const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([L.join('\n')],{type:'text/csv'}));
+ a.download='vone-tickets.csv';a.click();};
+
+const nFiles=Object.keys(FILES).length;
+document.getElementById('sub').textContent=
+ (CFG.packNote?CFG.packNote+' · ':'')+
+ `${R.length} tickets mirrored from ${CFG.source} · synced ${DATA.meta.synced||'—'} · `+
+ (nFiles?`attachments included for ${nFiles} tickets — click one to open it`
+        :`full detail for ${R.filter(r=>r[F.full]).length} · attachments on file for ${Object.keys(LOCAL).length} tickets`);
+banner();
+readDates();
+render();
+console.log('tracker ready:',R.length,'tickets · systems:',[...new Set(R.map(SYS))].join('/'),
+            '· local attachment folders:',Object.keys(LOCAL).length);
+
+</script></body></html>
